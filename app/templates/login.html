@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block headline %}Login{% endblock %}
+{% block headline2 %}{% endblock %}
+{% block signup %}<button class="btn btn-info btn-cons m-b-10 pull-right" data-target="#modalFillIn" data-toggle="modal" id="btnFillSizeToggler2">Create Acccount</button>{% endblock %}  
+{% block page_content %}
+  <div id="login_form" class="login-container bg-white">
+    <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40">
+      <!-- START Login Form -->
+      <form id="form-login" class="p-t-15" role="form" action="/login" method="post">
+        <!-- START Form Control-->
+        <div class="form-group form-group-default">
+          <label>Email</label>
+          <div class="controls">
+            <input type="email" name="email" placeholder="Enter Your Email" class="form-control" required>
+          </div>
+        </div>
+        <!-- END Form Control-->
+        <!-- START Form Control-->
+        <div class="form-group form-group-default">
+          <label>Password</label>
+          <div class="controls">
+            <input type="password" class="form-control" name="password" placeholder="Enter Your Password" required>
+          </div>
+        </div>
+        <!-- START Form Control-->
+        <div class="row">
+          <div class="col-md-6 no-padding"></div>
+        </div>
+        <!-- END Form Control-->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+              <li style=" background-color: #FBB0B0; width: 100%; list-style: none;">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <button id="signin_button" class="btn btn-info btn-cons m-b-10" type="submit">Sign in</button>
+      </form>
+      <!--END Login Form-->
+      <div class="pull-bottom sm-pull-bottom">
+        <div class="m-b-30 p-r-80 sm-m-t-20 sm-p-r-15 sm-p-b-20 clearfix">
+          <div class="col-sm-3 col-md-2 no-padding">
+          </div>
+          <div class="col-sm-9 no-padding m-t-10">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END Login Right Container-->
+  <!-- Create an account modal -->
+  <div class="modal fade fill-in" id="modalFillIn" tabindex="-1" role="dialog" aria-hidden="true">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> <i class="pg-close"></i>
+    </button>
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="text-left p-b-5"><span class="semi-bold">Create Account</span></h5>
+        </div>
+        <div class="modal-body">
+          <div id="signup_form_div" class="login-container bg-white">
+            <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40">
+              <!-- START Login Form -->
+              <form id="signup_form" class="p-t-15" role="form" action="/create_account" method="post">
+                <!-- START Form Control-->
+                <div class="form-group form-group-default">
+                  <label>Enter An Email Address</label>
+                  <div class="controls">
+                    <input type="email" id="email" name="email" placeholder="email address" class="form-control" required>
+                  </div>
+                </div>
+                <label id="email_error" for="email" style="display: block;"></label>
+                <!-- END Form Control-->
+                <!-- START Form Control-->
+                <div class="form-group form-group-default">
+                  <label>Enter A User Name</label>
+                  <div class="controls">
+                    <input type="text" id="username" name="username" placeholder="user name" class="form-control" required>
+                  </div>
+                </div>
+                <!-- END Form Control-->
+                <!-- START Form Control-->
+                <div class="form-group form-group-default">
+                  <label>Enter A CellPhone Number</label>
+                  <div class="controls">
+                    <input type="text" id="phonenumber" name="phonenumber" onkeypress='validate(event)' placeholder="phone number xxxxxxxxxx" class="form-control" required>
+                  </div>
+                </div>
+                <!-- END Form Control-->
+                <!-- START Form Control-->
+                <div class="form-group form-group-default">
+                  <label>Create A Password</label>
+                  <div class="controls">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Credentials" data-rule-password="true" required>
+                  </div>
+                </div>
+                <!-- START Form Control-->
+                <div class="form-group form-group-default">
+                  <label>Re-enter Password</label>
+                  <div class="controls">
+                    <input type="password" class="form-control" id="confirmed_password" name="confirmed_password" placeholder="Credentials" data-rule-password="true" data-rule-equalTo="#password" required>
+                  </div>
+                </div>
+                <!-- END Form Control-->
+                <!-- START Form Control-->
+                <div class="row">
+                  <div class="col-md-6 no-padding"></div>
+                </div>
+                <!-- END Form Control-->
+                <button id="create_account_button" class="btn btn-info btn-cons m-b-10" type="submit">Create Account</button>
+              </form>
+              <!--END Login Form-->
+              <div class="pull-bottom sm-pull-bottom">
+                <div class="m-b-30 p-r-80 sm-m-t-20 sm-p-r-15 sm-p-b-20 clearfix">
+                  <div class="col-sm-3 col-md-2 no-padding">
+                  </div>
+                  <div class="col-sm-9 no-padding m-t-10">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- End Modal -->
+  
+{% endblock %}
+
+{% block scripts %}
+  {{super()}}
+  <script src="{{ url_for('static', filename='jquery_validation/jquery.validate.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='jquery_validation/additional-methods.min.js') }}"></script>
+  <script>
+    function validate(evt) {
+      var theEvent = evt || window.event;
+      var key = theEvent.keyCode || theEvent.which;
+      key = String.fromCharCode( key );
+      var regex = /[0-9]|\./;
+      if( !regex.test(key) ) {
+        theEvent.returnValue = false;
+        if(theEvent.preventDefault) theEvent.preventDefault();
+      }
+    }
+    // onload methods
+    $(function () {
+      // create click function
+      $("#create_account_button").click(function(data){
+        //do a post
+      });
+      // to check that the email address entered is corrrectly formatted
+      // as well as to confirm the password was correctly typed
+      $("#login_form").validate();
+      $("#signup_form").validate({
+        rules: {
+          phonenumber: {
+            required: true,
+            phoneUS: true
+          }
+        }
+      });
+      
+      // check to see if the email address exist on the database already
+      $("#email").change(function() {
+        $.post( "/check_email", {'email': $("#email").val()}, function(data) {
+          var valid = data;
+          if(valid == 'false'){
+            $('#create_account_button').prop('disabled', true);
+            $('#email_error').text("Email exist already").css('color', 'red'); 
+          }
+          else{
+            $('#create_account_button').prop('disabled', false);
+            $('#email_error').text("");
+          }
+        });
+      });
+    // end of document load
+    });
+  </script>
+    
+{% endblock %}
+
+
