@@ -1,12 +1,12 @@
 #!/bin/bash
 
-NAME="message_app"
+NAME="remote_control"
 FLASKDIR=/home/pi/remote_control
 VENVDIR=/home/pi/venv
 SOCKFILE=/home/pi/remote_control/sock
 USER=pi
 GROUP=pi
-NUM_WORKERS=2
+NUM_WORKERS=3
 
 echo "Starting $NAME"
 

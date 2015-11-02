@@ -1,86 +1,75 @@
-{% extends "bootstrap/base.html" %}
-{% block metas %}
-  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <meta charset="utf-8" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-touch-fullscreen" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta content="" name="description" />
-  <meta content="" name="marc santiago" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-{% endblock %}
-{% block title %}{% endblock %}
-{% block styles %}
-  {{super()}}
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/pace/pace-theme-flash.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/boostrapv3/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/font-awesome/css/font-awesome.css') }}">
-    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='assets/plugins/jquery-scrollbar/jquery.scrollbar.css') }}">
-    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='assets/plugins/bootstrap-select2/select2.css') }}">
-    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='assets/plugins/switchery/css/switchery.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='pages/css/pages-icons.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='pages/css/pages.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='flot_css/screen_size.css')}}">
-{% endblock %}
-    <!--[if lte IE 9]>
-       <link rel="stylesheet" href="{{ url_for('static', filename='pages/css/ie9.css') }}">
-    <![endif]-->
+<!DOCTYPE html>
+<html>
+  <head>
+    {% block metas %}
+      <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+      <meta charset="utf-8" />
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-touch-fullscreen" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="default">
+      <meta content="" name="description" />
+      <meta content="" name="author" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    {% endblock %}
+    {% block title %}RaspberryPie Remote Control Apps{% endblock %}
+    {% block style %}
+      <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/pace/pace-theme-flash.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/boostrapv3/css/bootstrap.min.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/font-awesome/css/font-awesome.min.css') }}">
+      <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='assets/plugins/jquery-scrollbar/jquery.scrollbar.css') }}">
+      <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='assets/plugins/bootstrap-select2/select2.css') }}">
+      <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='assets/plugins/switchery/css/switchery.min.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='pages/css/pages-icons.css') }}">
+      <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='assets/plugins/simple-line-icons/simple-line-icons.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='pages/css/pages.css') }}">
 
-{% block navbar %}
+
+  {% endblock %}
+  </head>
+{% block content %}
+  <body class="fixed-header menu-pin menu-behind">
     <!-- BEGIN SIDEBAR -->
     <div class="page-sidebar" data-pages="sidebar">
       <div id="appMenu" class="sidebar-overlay-slide from-top">
       </div>
       <!-- BEGIN SIDEBAR HEADER -->
       <div class="sidebar-header">
-        <!-- <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" class="brand" data-src="{{ url_for('static', filename='logo.png') }}" data-src-retina="{{ url_for('static', filename='logo.png') }}" width="20%" height="50%"> -->
         <div class="sidebar-header-controls">
+          <button data-pages-toggle="#appMenu" class="btn btn-xs sidebar-slide-toggle btn-link m-l-20" type="button"><i class="fa fa-angle-down fs-16"></i>
+          </button>
+          <button data-toggle-pin="sidebar" class="btn btn-link visible-lg-inline" type="button"><i class="fa fs-12"></i>
+          </button>
         </div>
       </div>
       <!-- END SIDEBAR HEADER -->
       <!-- BEGIN SIDEBAR MENU -->
       <div class="sidebar-menu">
-        <!-- BEGIN SIDEBAR MENU ITEMS-->
-        <ul class="menu-items scroll-content scroll-scrolly_visible" style="margin-bottom: 0px; margin-right: 0px; height: 554px;">
-          <li class="m-t-30 open">
+        <ul class="menu-items">
+          <li class="m-t-30">
             <a href="/" class="detailed">
-              <span class="title">Home</span>
+              <span class="title">App OverView</span>
             </a>
-            <span class="icon-thumbnail bg-success"><i class="pg-home"></i></span>
+            <span class="icon-thumbnail "><i class="fa fa-suitcase"></i></span>
           </li>
-          <li class="open">
-            <a>
-              <span class="title">Settings</span>
-              <span class="arrow"></span>
+          <li class="">
+            <a href="/twitter_interface">
+              <span class="title">Twitter Interface</span>
             </a>
-            <span class="icon-thumbnail bg-success"><i class="pg-settings"></i></span>
-            <ul class="sub-menu">
-              <li>
-                  <a href="javascript:;">Sub Menu</a>
-                  <span class="icon-thumbnail">Sm</span>
-              </li>
-              <li>
-                <a href="ujavascript:;">Sub Menu</a>
-                <span class="icon-thumbnail">Sm</span>
-              </li>
-            </ul>
+            <span class="icon-thumbnail "><i class="fa fa-twitter"></i></span>
           </li>
-            <!-- <a href="/" class="detailed">
-              <span class="title">Settings</span>
+          <li class="">
+            <a href="/desk_light">
+              <span class="title">Lamp App</span>
             </a>
-            <span class="icon-thumbnail bg-success"><i class="pg-settings"></i></span>
-          </li> -->
+            <span class="icon-thumbnail "><i class="fa fa-lightbulb-o"></i></span>
+          </li>
         </ul>
+        <div class="clearfix"></div>
       </div>
       <!-- END SIDEBAR MENU -->
     </div>
     <!-- END SIDEBAR -->
-{% endblock %}
-
-
-{% block content %}
-  <body class="fixed-header">
     <!-- START PAGE-CONTAINER -->
     <div class="page-container">
       <!-- START PAGE HEADER WRAPPER -->
@@ -98,35 +87,30 @@
           <!-- END ACTION BAR -->
         </div>
         <!-- RIGHT SIDE -->
+        <div class="pull-right full-height visible-sm visible-xs">
+        </div>
         <!-- END MOBILE CONTROLS -->
+        <!-- <div class=" pull-left sm-table">
+          <div class="header-inner">
+            <div class="brand inline">
+              <span>Control</span>
+            </div>
+          </div>
+        </div> -->
         <div class=" pull-right">
           <div class="header-inner">
-            <!-- ADD LOG OUT BUTTON -->
-            {% if current_user.is_authenticated %}
-              <button id="logout_btn" class="btn btn-info btn-cons m-b-10 pull-right">Log Out</button>
-            {% else %}
-              {% block signup %}{% endblock %}
-              <!-- <button id="create_user_button" class="btn btn-primary btn-cons m-t-10" type="submit">Create An Account</button> -->
-            {% endif %}
+            <button style="margin-top:3%;" id="logout" class="btn btn-info btn-cons m-b-10" type="button"><i class="fa fa-sign-out"></i><span class="bold">Log Out</span></button>
           </div>
         </div>
         <div class=" pull-right">
           <!-- START User Info-->
           <div class="visible-lg visible-md m-t-10">
             <div class="pull-left p-r-10 p-t-10 fs-16 font-heading">
-              <span class="semi-bold">
-                {% if current_user.is_authenticated %}
-                  Welcome {{current_user.email}}
-                {% else %}
-                  Please Sign In
-                {% endif %}
-                </span>
-            </div>
-            <div class="dropdown pull-right">
-              <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="thumbnail-wrapper d32 circular inline m-t-5">
-            </span>
-              </button>
+              {% if current_user.is_authenticated %}
+                <span style="color: #fff" class="bold">{{current_user.name.title()}}</span>
+              {% else %}
+                Please Sign In
+              {% endif %}
             </div>
           </div>
           <!-- END User Info-->
@@ -144,13 +128,10 @@
               <div class="inner">
                 <!-- START BREADCRUMB -->
                 <ul class="breadcrumb">
-                  {% block breadcrumb %}
                   <li>
                     <p>{% block headline %}Pages{% endblock %}</p>
                   </li>
-                  <li><a href="#" class="active">{% block headline2 %}Barebone template{% endblock %}</a>
-                  </li>
-                  {% endblock %}
+                  <li>{% block headline2 %}Barebone template{% endblock %}</li>
                 </ul>
                 <!-- END BREADCRUMB -->
               </div>
@@ -164,59 +145,59 @@
             <!-- END PLACE PAGE CONTENT HERE -->
           </div>
           <!-- END CONTAINER FLUID -->
+          <!-- START FOOTER -->
+          <div class="container-fluid container-fixed-lg footer">
+            <div class="copyright sm-text-center">
+              <p class="small no-margin pull-left sm-pull-reset">
+                <span class="hint-text">Copyright © 2015</span>
+                <span class="font-montserrat">Marc Santiago</span>.
+                <span class="hint-text">All rights reserved.</span>
+              </p>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <!-- END FOOTER -->
         </div>
         <!-- END PAGE CONTENT -->
-        <!-- START FOOTER -->
-        <div class="container-fluid container-fixed-lg footer">
-          <div class="copyright sm-text-center">
-            <p class="small no-margin pull-left sm-pull-reset">
-              <span class="hint-text">Copyright © 2015</span>
-              <span class="font-montserrat">Marc Santiago</span>.
-              <span class="hint-text">All rights reserved.</span>
-            </p>
-            <div class="clearfix"></div>
-          </div>
-        </div>
-        <!-- END FOOTER -->
       </div>
       <!-- END PAGE CONTENT WRAPPER -->
     </div>
     <!-- END PAGE CONTAINER -->
-    </div>
+  </body>
 {% endblock %}
-
 {% block scripts %}
-  {{super()}}
-    <script src="{{ url_for('static', filename='assets/plugins/pace/pace.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/jquery/jquery-1.11.1.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/modernizr.custom.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/boostrapv3/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/jquery/jquery-easy.js') }}"></script> 
-    <script src="{{ url_for('static', filename='assets/plugins/jquery-unveil/jquery.unveil.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/jquery-bez/jquery.bez.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/jquery-ios-list/jquery.ioslist.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/jquery-actual/jquery.actual.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/bootstrap-select2/select2.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/classie/classie.js') }}"></script>
-    <script src="{{ url_for('static', filename='pages/js/pages.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/js/scripts.js') }}"></script>
-    <script src="{{ url_for('static', filename='flot/jquery.flot.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='flot/jquery.flot.categories.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='flot/jquery.flot.axislabels.js') }}"></script>
-    <script>
-      $(document).ready(function(){
-        // change side bar class 
-        $("body").addClass('mac desktop pace-done menu-pin')
-        //logout button
-        $("#logout_btn").click(function(){
-          $.get("/logout", function() {
-          });
-          setTimeout("location.reload();", 1000);
-        });
-      //end of document ready
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+
+  <script src="{{ url_for('static', filename='assets/js/icon.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/pace/pace.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/modernizr.custom.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/boostrapv3/js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/jquery/jquery-easy.js') }}"></script> 
+  <script src="{{ url_for('static', filename='assets/plugins/jquery-unveil/jquery.unveil.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/jquery-bez/jquery.bez.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/jquery-ios-list/jquery.ioslist.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/jquery-actual/jquery.actual.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/bootstrap-select2/select2.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/classie/classie.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/plugins/jquery.sieve.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/scripts.js') }}"></script>
+  <script src="{{ url_for('static', filename='pages/js/pages.min.js') }}"></script>
+
+
+  <script>
+    $(document).ready(function(){
+      // logout button
+      $("#logout").click(function(){
+        $.get("/logout", function() {
       });
-    </script>
+        setTimeout("location.reload();", 1000);
+      });
+    //end of document ready
+    });
+  </script>
+
 {% endblock %}
- 
+</html>

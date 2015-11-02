@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block headline %}Twitter Bot{% endblock %}
+{% block headline2 %}OverView{% endblock %}
+
+{% block page_content %}
+
+<div class="row">
+  <div class="col-xs-2 col-md-2">
+    <div><b>Wiki Link Percent: {{stats}}</b></div>
+  </div>
+  <div class="col-xs-2 col-md-2">
+    <div><b>Status: <span id="status"></span></b></div>
+  </div>
+  <div class="col-xs-2 col-md-2">
+    <div><button id="toggle" type="button" class="btn btn-default btn-cons" data-toggle="button" aria-pressed="true"></button></div>
+  </div>
+</div>
+<br /><br />
+<div class="container-fluid container-fixed-lg bg-white">
+  <!-- START PANEL -->
+  <div class="panel panel-transparent">
+    <div class="panel-heading">
+      <div class="panel-title">Tweets</div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <div id="basicTable_wrapper" class="dataTables_wrapper form-inline no-footer">
+          <table class="table table-hover dataTable no-footer" id="basicTable" role="grid">
+            <thead>
+              <tr role="row">
+                <th style="width: 51px;" class="sorting_disabled" rowspan="1" colspan="1" aria-label=""></th>
+                <th style="width: 268px;" class="sorting_desc" tabindex="0" aria-controls="basicTable" rowspan="1" colspan="1" aria-sort="descending" aria-label="Title: activate to sort column ascending">#</th>
+                <th style="width: 268px;" class="sorting_desc" tabindex="0" aria-controls="basicTable" rowspan="1" colspan="1" aria-sort="descending" aria-label="Title: activate to sort column ascending">Date Posted</th>
+                <th style="width: 270px;" class="sorting" tabindex="0" aria-controls="basicTable" rowspan="1" colspan="1" aria-label="Places: activate to sort column ascending">URL</th>
+                <th style="width: 406px;" class="sorting" tabindex="0" aria-controls="basicTable" rowspan="1" colspan="1" aria-label="Activities: activate to sort column ascending">Tweet</th>
+            <tbody id="tweet_table">
+              {% for entry in entries %}
+              <tr role="row" class="odd">
+                <td class="v-align-middle"></td>
+                <td class="v-align-middle sorting_1">
+                  <p id='number'></p>
+                </td>
+                <td class="v-align-middle sorting_1">
+                  <p>{{entry['date']}}</p>
+                </td>
+                <td class="v-align-middle">
+                  <p>{{entry['long_url']}}</p>
+                </td>
+                <td class="v-align-middle">
+                  <p>{{entry['post']}}</p>
+                </td>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+{{super()}}
+  <script>
+  $(function() {
+    if($(window).width() <= 360){
+      $("#toggle").css('margin-left', '100%');
+    }
+    var button = $("#toggle");
+    // set label based on db information
+    {% if account['toggled'] == 'On' %}
+      button.text('Turn Off').css('color', 'green');
+      $('#status').html('Twitter Bot Is Running');
+    {% else %}
+      button.text('Turn On').css('color', 'red');
+      $('#status').html('Twitter Bot Is not Running');
+    {% endif %}
+    // update db information and change button information
+    $("#toggle").click(function() {
+      var text = button.text().split(' ')[1];
+      $.post( "/vtpyf", {'toggled': text}, function(data) {
+      });
+      if(text == 'On'){
+        button.text('Turn Off').css('color', 'green');
+        $('#status').html('Twitter Bot Is Running');
+      }
+      else{
+        button.text('Turn On').css('color', 'red');
+        $('#status').html('Twitter Bot Is not Running');
+      }x
+    });
+    // add number the rows
+    $('[id=number]').each(function(i){
+            $(this).text(i+1);
+    });
+  });
+  </script>
+{% endblock %}
+
+

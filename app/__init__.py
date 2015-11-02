@@ -1,14 +1,17 @@
 import json
+import os 
 
-from scripts import extract_emails
-from scripts.mongo import db
+from datetime import datetime
 
-from flask import Flask, render_template, request, url_for, redirect, flash
+from flask import Flask, render_template, request, url_for, redirect
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from bson.objectid import ObjectId
+
+from lib.mongo import db
+from scripts.twitter_stats import ratio_of_wiki_links
+from scripts.electric_bill_calculator import ElectricBill
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = ''
@@ -17,22 +20,23 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 bootstrap = Bootstrap(app)
 
+
 ##############################################
 ##############################################
 #######USER CLASS FOR LOGGING IN AND OUT
 ##############################################
 ##############################################
 class User(UserMixin):
-  def __init__(self, email, password, id, active=True):
-    self.email = email
+  def __init__(self, name, password, id, active=True):
+    self.name = name
     self.password = password
     self.id = id
     self.active = active
 
   def is_active(self):
-    account = db.accounts.find_one({ "email": self.email})
+    account = db.users.find_one({ "username": self.name})
     if account is not None:
-      if self.email != account['email'] or check_password(account['account']['password'], self.password) is False:
+      if not account['username'] == self.name and account['password'] == self.password:
         self.active = False
     else:
       self.active = False
@@ -43,9 +47,9 @@ class User(UserMixin):
 
   def is_authenticated(self):
     return True
-
+  
   def get_id(self):
-    return str(db.accounts.find_one({'email': self.email})['_id'])
+    return str(db.users.find_one({'username': self.name})['_id'])
 
 ##############################################
 ##############################################
@@ -54,77 +58,38 @@ class User(UserMixin):
 ##############################################
 @login_manager.user_loader
 def load_user(userid):
-  user_rec = db.accounts.find_one({'_id': ObjectId(userid)})
-  user = User(user_rec['email'] ,user_rec['account']['password'], user_rec['_id'])
+  user_rec = db.users.find_one({'_id': ObjectId(userid)})
+  user = User(user_rec['username'], user_rec['password'], user_rec['_id'])
   return user
 
 @app.route("/logout", methods=["GET"])
 @login_required
 def logout():
-  current_user.active = False
+  current_user.active = False 
   logout_user()
   return render_template('login.html')
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-  db_email = None
+  error = None
+  db_username = None
   db_password = None
   if request.method == 'POST':
-    post_email = request.form['email']
+    post_username = request.form['username']
     post_password = request.form['password']
     try:
-      account = db.accounts.find_one({"email": post_email})
-      db_password = account['account']['password']
-      db_email = account['email']
+      account = db.users.find_one({ "username": post_username})
+      db_password = account['password']
+      db_username = account['username']
     except:
       pass
-    if db_email != post_email or check_password(db_password, post_password) is False:
-      flash('Invalid Credentials, please try again')
+    if post_username != db_username or post_password != db_password:
+      error = 'Invalid Credentials, please try again'
     else:
-      user = User(post_email, post_password, account['_id'])
+      user = User(post_username, post_password, account['_id'])
       login_user(user)
       return redirect(url_for('home'))
-  return render_template('login.html')
-
-@app.route('/check_email', methods=['POST'])
-def check_email():
-  email = request.form['email']
-  email = list(db.accounts.find({'email': email}))
-  if email == []:
-    return json.dumps(True)
-  else:
-    return json.dumps(False)
-
-def set_password(password):
-  pw_hash = generate_password_hash(password)
-  return pw_hash
-
-def check_password(dbpassword, password):
-  return check_password_hash(dbpassword, password)
-
-@app.route('/create_account', methods=['POST'])
-def create_account():
-  if request.method == 'POST':
-    new_account = {}
-    post_email = request.form['email']
-    post_username = request.form['username']
-    post_cellphone = request.form['phonenumber']
-    post_password = request.form['password']
-    # double check the account doens't exist
-    dbemail = list(db.accounts.find({'email': post_email}))
-    if dbemail != []:
-      flash('The Email Already Exist')
-      return redirect(url_for('login')) 
-    # all the information was validated on the front end so it should be safe to passed it in
-    # example object to pass into mongo
-    new_account = {
-      'username': post_username,
-      'password': set_password(post_password),
-      'cellphone': post_cellphone,
-    }
-    db.accounts.update({'email': post_email}, {'email': post_email, 'account': new_account}, upsert=True)
-    flash('Account Created')
-  return redirect(url_for('login'))
+  return render_template('login.html', error=error)
 
 ##############################################
 ##############################################
@@ -134,7 +99,8 @@ def create_account():
 @app.route('/')
 @login_required
 def home():
-  return render_template('index.html')
+  pass
+
 
 ##############################################
 ##############################################
